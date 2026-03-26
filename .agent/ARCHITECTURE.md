@@ -12,21 +12,28 @@
 
 ## Text Diagram
 ```text
-Mobile UI
-  -> Next.js server/client boundary
-  -> FastAPI prediction endpoint
-      -> request validation
-      -> feature row builder
-      -> yield model service (XGBoost or fallback)
-      -> price model service (Prophet or fallback)
-      -> mandi mock service
-      -> advisory placeholder service
-      -> response composer
-  -> mobile prediction view
+Mobile/Desktop UI (Next.js App Router)
+  |-- Public Routes
+  |    |-- / (Landing page)
+  |    |-- /login (NextAuth Google Login)
+  |
+  |-- Protected Routes (NextAuth Session Check)
+  |    |-- /dashboard (Overview & Navigation)
+  |    |-- /predict (Input Form & Result Display)
+  |    |     '-> Next.js client `fetch` to FastAPI
+  |    |-- /history (Historical data table)
+  |    |-- /settings (User preferences and Sign Out)
+
+Backend Engine (FastAPI)
+  -> Request Validation (Pydantic)
+  -> Feature Pipeline builder
+  -> Models Registry (Yield, Pricing)
+  -> Advisory Service (Gemma 27B)
+  -> Response Composer (JSON mapping)
 ```
 
-## Component Responsibilities
-- Next.js frontend: collect user input, render prediction cards, charts, and advisory in a mobile-first layout.
+## Core Components
+- **Next.js frontend**: Minimal styled components containing robust client-side validation, Google OAuth via NextAuth, and decoupled `prediction-form.tsx` and `prediction-result.tsx`.e-first layout.
 - FastAPI router: validate requests, enforce contracts, and orchestrate downstream services.
 - Feature builder: transform request fields into the ordered single-row payload sent to model `predict()`.
 - Yield model service: load and execute XGBoost artifact when present, otherwise use a fallback value.

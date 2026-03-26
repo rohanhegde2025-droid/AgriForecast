@@ -1,67 +1,54 @@
-# UI Spec
+# UI Specification
 
-## Product Surface
-The MVP frontend is a mobile-first Next.js App Router application designed for farmers who need a short, clear flow from selection to recommendation.
+## Overview
+Next.js App Router application with a clean, minimal, and professional SaaS feel built for farmers. 
 
-## Layout Structure
-- App Router root layout with shared header, content container, and safe mobile spacing
-- dashboard page for input selection and recent context
-- prediction view page for results, charts, and advisory
+## Stack
+- Framework: Next.js (App Router)
+- Language: TypeScript
+- Styling: Tailwind CSS v4
+- Authentication: NextAuth.js (Google Provider)
+- Components: Minimalist custom components (rounded-xl, simple borders, robust spacing).
 
-Suggested route shape:
-- `/`
-- `/prediction`
+## Color System
+- Background: `bg-white`
+- Cards: `bg-neutral-50`
+- Borders: `border-neutral-200`
+- Text (Body): `text-neutral-500`
+- Text (Heading): `text-neutral-900`
+- Primary Element: `bg-neutral-900` (text-white)
 
-## Required Pages
+## Pages
 
-### Dashboard
-- primary entry page
-- presents location and crop selection
-- includes a clear CTA to run prediction
-- optionally shows recent supported crops or market highlights
+### 1. Landing Page (`/`)
+- Hero Section: Badge, Heading, Subheading, Get Started CTA.
+- Value Proposition: 3 value pillars (Predict Yield, Forecast Prices, Smart Recommendations).
+- How it works: 3 clear steps.
+- Target Audience: Clean dark block to separate layout sections.
+- Footer: Simple copyright text.
 
-### Prediction View
-- shows yield prediction
-- shows mandi price forecast
-- shows chart summaries
-- shows advisory card with recommended action and risk notes
-- includes source freshness and model metadata in a compact secondary section
+### 2. Login Page (`/login`)
+- Dedicated auth flow route.
+- Centered card layout with "Continue with Google" button.
 
-## Required Components
-- `LocationSelector`
-  - state selector
-  - district selector
-  - crop selector
-- `PredictionCard`
-  - numeric output
-  - confidence or label
-  - contextual subtitle
-- `PredictionCharts`
-  - simple, readable trend chart for mandi forecast
-  - compact comparison visuals only if they remain legible on mobile
-- `AdvisoryCard`
-  - recommendation headline
-  - short summary
-  - reasoning
-  - risk notes
+### 3. Dashboard (`/dashboard`)
+- Protected route.
+- Header: Welcome message.
+- Navigation cards: Links to New Prediction, History, and Live Markets (Mock).
+- Activity summary: Displays recent prediction links.
 
-## shadcn/ui Usage
-- use shadcn form controls for selectors and validation states
-- use card components for prediction blocks and advisory
-- use sheet or drawer patterns only when mobile interaction clearly benefits
-- keep visual density low and tap targets large
+### 4. Prediction Page (`/predict`)
+- Protected route.
+- Farm Details: Crop, region, soil type inputs.
+- Environment Details: Weather, rainfall, temperature, days to harvest.
+- Method Details: Fertilizer and irrigation checkboxes.
+- Results UI: Clean data blocks for yield and price, plus a dark card for reading the recommendation.
 
-## Mobile UX Rules
-- optimize for one-handed use and poor connectivity conditions
-- keep the primary CTA visible without excessive scrolling
-- use short labels and plain language
-- surface loading, stale-data, and fallback states clearly
-- avoid heavy dashboards that overwhelm users with too many charts
+### 5. History Page (`/history`)
+- Protected route.
+- Clean data table listing past runs. (Currently supported by static UI mocks).
 
-## Content Rules
-- Separate numeric predictions from AI advice visually.
-- Use supportive language and plain English suitable for later localization.
-- Highlight whether advice is based on fresh or cached market data.
-
-## Maintenance Rule
-- Update this file whenever routes, layouts, major components, or UX priorities change.
+### 6. Settings Page (`/settings`)
+- Protected route.
+- User profile info derived from NextAuth session token.
+- Secure "Log Out" functionality.

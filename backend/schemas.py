@@ -17,4 +17,5 @@ class PredictResponse(BaseModel):
     yield_prediction: float
     price_prediction: float
     price_trend: str
+    confidence: float = 0.0
     advisory: str
