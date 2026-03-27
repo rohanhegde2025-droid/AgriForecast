@@ -11,10 +11,10 @@ logger = logging.getLogger(__name__)
 
 app = FastAPI(title="AgriForecast Backend", version="0.2.0")
 
-# CORS — allow Next.js frontend
+# CORS — allow all origins for deployment flexibility
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://localhost:3001"],
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
