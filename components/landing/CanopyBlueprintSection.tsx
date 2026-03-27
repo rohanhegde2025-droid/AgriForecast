@@ -41,7 +41,7 @@ const CanopyBlueprintSection: React.FC = () => {
             setVisible(true);
             ANNOTATIONS.forEach((ann, i) => {
               setTimeout(() => {
-                setDrawnLines((prev) => new Set([...prev, ann.id]));
+                setDrawnLines((prev) => new Set([...Array.from(prev), ann.id]));
               }, 600 + i * 150);
             });
           }
