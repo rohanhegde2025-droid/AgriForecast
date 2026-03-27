@@ -65,14 +65,19 @@ const HowItWorksSection: React.FC = () => {
               How It Works · Three Steps
             </span>
           </div>
-          <h2 className="font-sans font-light leading-[1.1]" style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', color: '#E8F0E4' }}>
-            From farm details<br />
-            <span style={{ color: '#D4A017', fontWeight: 600 }}>to a confident decision.</span>
+          <h2 className="font-sans font-light" style={{ fontSize: 'clamp(2.25rem, 4vw, 3.5rem)' ,
+              color: '#E8F0E4' , letterSpacing: '-0.02em' , lineHeight: 1.1 }}>
+              Simple process.<br />
+              <span style={{ color: '#D4A017' , fontWeight: 600 }}>Verified insights.</span>
           </h2>
+          <p className="mt-4 mx-auto max-w-md font-sans" style={{ color: 'rgba(232,240,228,0.7)' ,
+              fontSize: '0.9375rem' , lineHeight: 1.7 }}>
+              Get from data entry to a sell decision in under a minute.
+          </p>
         </div>
 
         {/* Steps Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {steps.map((step, i) => (
             <div 
               key={step.id} 

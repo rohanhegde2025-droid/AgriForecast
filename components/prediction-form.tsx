@@ -120,7 +120,7 @@ export function PredictionForm({ onSubmit, isLoading }: PredictionFormProps) {
 
             <div>
               <label className="block text-[10px] font-bold text-[#CBD5C9] uppercase tracking-widest mb-2">Condition Outlook</label>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {WEATHER_CONDITIONS.map(w => (
                   <label key={w} className={`flex items-center gap-3 p-3.5 rounded-lg border cursor-pointer transition-all duration-300 ${formData.weather_condition === w ? 'bg-[var(--color-primary-800)] border-[var(--color-gold)] shadow-[0_0_15px_rgba(212,160,23,0.15)]' : 'bg-[var(--color-primary-800)]/40 border-[var(--color-gold)]/10 hover:border-[var(--color-gold)]/40'}`}>
                     <input type="radio" required name="weather_group" checked={formData.weather_condition === w} onChange={() => handleWeather(w)} className="hidden" />
@@ -148,7 +148,7 @@ export function PredictionForm({ onSubmit, isLoading }: PredictionFormProps) {
             <h3 className="text-lg font-bold text-[#E8F0E4] tracking-wide">Active Management</h3>
           </div>
           
-          <div className="grid grid-cols-2 gap-12">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 lg:gap-12 w-full">
             <div>
               <label className="block text-[10px] font-bold text-[#CBD5C9] uppercase tracking-widest mb-4">Irrigation</label>
               <div className="flex gap-8">
@@ -179,8 +179,8 @@ export function PredictionForm({ onSubmit, isLoading }: PredictionFormProps) {
           </div>
         </div>
 
-        <div className="shrink-0 flex flex-col items-end relative z-10">
-          <button type="submit" disabled={isLoading} className="btn-gold relative overflow-hidden group px-8 py-5 rounded-xl text-[var(--color-primary-900)] shadow-[0_0_20px_rgba(212,160,23,0.3)] hover:shadow-[0_0_30px_rgba(212,160,23,0.5)] transition-all duration-300 flex items-center gap-8 min-w-[300px] justify-between border border-[var(--color-gold)]">
+        <div className="shrink-0 flex flex-col items-center md:items-end relative z-10 w-full md:w-auto">
+          <button type="submit" disabled={isLoading} className="btn-gold relative overflow-hidden group px-8 py-5 rounded-xl text-[var(--color-primary-900)] shadow-[0_0_20px_rgba(212,160,23,0.3)] hover:shadow-[0_0_30px_rgba(212,160,23,0.5)] transition-all duration-300 flex items-center gap-8 w-full md:min-w-[300px] justify-between border border-[var(--color-gold)]">
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-[200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
             
             {isLoading ? (

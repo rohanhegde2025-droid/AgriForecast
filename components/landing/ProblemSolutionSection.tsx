@@ -72,20 +72,15 @@ const ProblemSolutionSection: React.FC = () => {
               The Problem · The Solution
             </span>
           </div>
-          <h2 className="font-sans font-light" style={{
-            fontSize: 'clamp(2rem, 4vw, 3.5rem)', color: '#1B4332',
-            letterSpacing: '-0.02em', lineHeight: 1.1 }}>
-            Farming is uncertain.<br />
-            <span style={{ color: '#D4A017', fontWeight: 600 }}>Your decisions
-              don't have to be.</span>
+          <h2 className="font-sans font-light" style={{ fontSize: 'clamp(2.25rem, 5vw, 4rem)' , color: '#1B4332' ,
+              letterSpacing: '-0.02em' , lineHeight: 1.1 }}>
+              The guesswork ends<br />
+              <span style={{ color: '#D4A017' , fontWeight: 600 }}>here.</span>
           </h2>
-          <p className="mt-4 max-w-xl font-sans" style={{ color: 'rgba(27, 67, 50, 0.7)',
-            fontSize: '0.9375rem', lineHeight: 1.7 }}>
-            Every season, farmers face the same challenges — unpredictable yields,
-            volatile prices,
-            and the pressure of deciding when to sell. AgriForecast reduces that
-            uncertainty with
-            practical, data-backed insights built for working farms.
+          <p className="mt-8 mx-auto max-w-xl font-sans" style={{ color: 'rgba(27, 67, 50, 0.7)' ,
+              fontSize: '1rem' , lineHeight: 1.7 }}>
+              Agricultural markets are volatile and yield is unpredictable. AgriForecast cuts
+              through the noise with data from historical trends and local conditions.
           </p>
         </div>
 

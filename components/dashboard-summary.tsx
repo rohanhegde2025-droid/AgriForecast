@@ -64,16 +64,16 @@ export function DashboardSummary() {
           <div className="absolute inset-0 bg-gradient-to-r from-[var(--color-primary-900)] via-[var(--color-primary-900)]/80 to-[var(--color-primary-900)]/20" />
         </div>
         
-        <div className="relative z-10 px-8 py-6 w-full">
-          <div className="flex items-center gap-5">
+        <div className="relative z-10 px-6 sm:px-8 py-8 sm:py-6 w-full">
+          <div className="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-5">
             <div className="w-14 h-14 rounded-[12px] bg-[var(--color-gold)]/10 border border-[var(--color-gold)]/40 flex items-center justify-center text-[var(--color-gold)] shadow-[0_0_20px_rgba(212,160,23,0.15)] flex-shrink-0">
               <TrendingUp className="w-7 h-7" />
             </div>
             <div>
-              <h2 className="text-3xl font-bold text-[#E8F0E4] tracking-tight">
+              <h2 className="text-2xl sm:text-3xl font-bold text-[#E8F0E4] tracking-tight">
                 Welcome to AgriForecast
               </h2>
-              <p className="text-sm text-[var(--color-gold)] mt-1.5 font-bold tracking-widest uppercase">
+              <p className="text-xs sm:text-sm text-[var(--color-gold)] mt-1.5 font-bold tracking-widest uppercase">
                 Data-driven decisions for every harvest season
               </p>
             </div>

@@ -71,14 +71,16 @@ const Header: React.FC = () => {
           </button>
         </div>
 
-        {/* Mobile menu */}
-        {menuOpen && (
-          <div className="lg:hidden glass-dark mt-3 p-8 flex flex-col gap-5 rounded-2xl border border-gold/30 shadow-2xl">
+        {/* Mobile menu - Animated slide down */}
+        <div 
+          className={`lg:hidden overflow-hidden transition-all duration-500 ease-in-out ${menuOpen ? 'max-h-[500px] opacity-100 mt-3' : 'max-h-0 opacity-0'}`}
+        >
+          <div className="glass-dark p-8 flex flex-col gap-5 rounded-2xl border border-gold/30 shadow-2xl">
             {navLinks.map((link) => (
               <a 
                 key={link.label} 
                 href={link.href} 
-                className="font-mono text-xs uppercase tracking-widest text-mist py-2"
+                className="font-mono text-xs uppercase tracking-widest text-mist py-2 hover:text-gold transition-colors"
                 onClick={() => setMenuOpen(false)}
               >
                 {link.label}
@@ -86,13 +88,13 @@ const Header: React.FC = () => {
             ))}
             <a 
               href="/login" 
-              className="btn-gold px-7 py-4 text-[0.7rem] text-center rounded-sm mt-2 font-bold uppercase tracking-widest" 
+              className="btn-gold px-7 py-4 text-[0.7rem] text-center rounded-sm mt-2 font-bold uppercase tracking-widest shadow-xl" 
               onClick={() => setMenuOpen(false)}
             >
               Get Started
             </a>
           </div>
-        )}
+        </div>
       </div>
     </header>
   );

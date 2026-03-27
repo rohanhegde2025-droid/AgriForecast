@@ -19,7 +19,7 @@ export default function HistoryPage() {
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-background)] via-[var(--color-background)]/80 to-transparent" />
           
-          <div className="absolute bottom-0 left-0 w-full p-10 max-w-6xl mx-auto flex items-end">
+          <div className="absolute bottom-0 left-0 w-full p-6 md:p-10 max-w-6xl mx-auto flex items-end">
             <div className="w-full">
               <h1 className="text-4xl md:text-5xl font-bold text-[#E8F0E4] tracking-tight mb-6 drop-shadow-sm">
                 Harvest Prediction <span className="italic text-[var(--color-gold)]">Archive</span>
@@ -33,7 +33,7 @@ export default function HistoryPage() {
           </div>
         </div>
 
-        <main className="max-w-6xl mx-auto px-10 pt-20 mt-4">
+        <main className="max-w-6xl mx-auto px-4 sm:px-10 pt-20 mt-4">
           <HistoryTable />
 
           <div className="grid grid-cols-1 md:grid-cols-[1.5fr_1fr] gap-8 mt-16">

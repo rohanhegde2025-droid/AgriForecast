@@ -87,7 +87,7 @@ const HeroSection: React.FC = () => {
 
                 {/* Headline */}
                 <h1 className={`font-sans font-light mb-6 section-hidden ${visible ? 'section-visible' : ''}`} 
-                    style={{ fontSize: 'clamp(3rem, 6vw, 5.5rem)', lineHeight: 1.0, color: '#E8F0E4', letterSpacing: '-0.03em', maxWidth: '16ch', transitionDelay: '0.1s' }}>
+                    style={{ fontSize: 'clamp(2.25rem, 6.5vw, 5.5rem)', lineHeight: 1.05, color: '#E8F0E4', letterSpacing: '-0.03em', maxWidth: '16ch', transitionDelay: '0.1s' }}>
                     Smarter decisions<br />
                     <span style={{ color: '#D4A017', fontWeight: 600 }}>
                         for every harvest.

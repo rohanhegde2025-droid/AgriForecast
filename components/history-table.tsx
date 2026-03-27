@@ -31,8 +31,8 @@ export function HistoryTable() {
   return (
     <div className="w-full">
       {/* Filters Bar */}
-      <div className="glass-dark border border-[var(--color-gold)]/20 p-5 rounded-xl flex items-center justify-between shadow-[0_8px_32px_rgba(0,0,0,0.3)] mb-8">
-        <div className="flex-1 max-w-md">
+      <div className="glass-dark border border-[var(--color-gold)]/20 p-5 rounded-xl flex flex-col md:flex-row items-stretch md:items-end justify-between shadow-[0_8px_32px_rgba(0,0,0,0.3)] mb-8 gap-5">
+        <div className="flex-1 w-full">
           <label className="block text-[9px] font-bold text-[#CBD5C9] uppercase tracking-widest mb-2 pl-1">SEARCH PREDICTION</label>
           <div className="relative">
             <Search className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-[var(--color-gold)]/70" />
@@ -46,8 +46,8 @@ export function HistoryTable() {
           </div>
         </div>
         
-        <div className="flex items-center gap-5">
-          <div className="w-48">
+        <div className="flex flex-col sm:flex-row items-center gap-5 w-full md:w-auto">
+          <div className="w-full sm:w-48">
             <label className="block text-[9px] font-bold text-[#CBD5C9] uppercase tracking-widest mb-2 pl-1">CROP TYPE</label>
             <select
               value={cropFilter}
@@ -57,7 +57,7 @@ export function HistoryTable() {
               {ALL_CROPS.map(c => <option key={c} value={c} className="bg-[var(--color-primary-900)]">{c}</option>)}
             </select>
           </div>
-          <div className="w-48">
+          <div className="w-full sm:w-48">
             <label className="block text-[9px] font-bold text-[#CBD5C9] uppercase tracking-widest mb-2 pl-1">TIMELINE</label>
             <div className="relative">
               <input type="text" value="Last 90 Days" readOnly className="w-full bg-[var(--color-primary-800)]/70 border border-[var(--color-gold)]/20 text-[#E8F0E4] py-2.5 px-4 rounded-lg focus:outline-none font-medium cursor-default" />

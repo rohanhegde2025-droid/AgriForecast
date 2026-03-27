@@ -1,10 +1,13 @@
-"use client";
-
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, History, Activity, Settings, HelpCircle } from "lucide-react";
+import { LayoutDashboard, History, Activity, Settings, HelpCircle, X } from "lucide-react";
 
-export function Sidebar() {
+interface SidebarProps {
+  isOpen?: boolean;
+  onClose?: () => void;
+}
+
+export function Sidebar({ isOpen, onClose }: SidebarProps) {
   const pathname = usePathname();
 
   const mainLinks = [
@@ -14,8 +17,8 @@ export function Sidebar() {
   ];
 
   return (
-    <aside className="w-68 flex-shrink-0 border-r border-[var(--color-gold)]/20 bg-[var(--color-primary-900)] flex flex-col h-screen sticky top-0 shadow-[4px_0_24px_rgba(0,0,0,0.3)] z-40">
-      <div className="p-8 pb-10">
+    <aside className={`fixed lg:sticky top-0 left-0 h-screen w-68 flex-shrink-0 border-r border-[var(--color-gold)]/20 bg-[var(--color-primary-900)] flex flex-col shadow-[4px_0_24px_rgba(0,0,0,0.3)] z-50 transition-transform duration-300 ease-in-out lg:translate-x-0 ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+      <div className="p-8 pb-10 flex items-center justify-between">
         <Link href="/" className="block group">
           <h1 className="text-2xl font-black text-[#E8F0E4] tracking-tighter transition-all duration-300 group-hover:tracking-tight">
             Agri<span className="text-[var(--color-gold)]">Forecast</span>
@@ -25,6 +28,10 @@ export function Sidebar() {
             <p className="text-[9px] font-bold text-[#CBD5C9] tracking-[0.2em] uppercase">Digital Agronomist</p>
           </div>
         </Link>
+        {/* Close button on mobile */}
+        <button onClick={onClose} className="lg:hidden text-[var(--color-gold)] p-2 hover:bg-[var(--color-primary-800)]/40 rounded-lg">
+          <X size={20} />
+        </button>
       </div>
 
       <nav className="flex-1 px-5 space-y-3">
@@ -42,6 +49,7 @@ export function Sidebar() {
                   ? "bg-[var(--color-gold)] text-[var(--color-primary-900)] shadow-[0_0_15px_rgba(212,160,23,0.3)] scale-[1.02]" 
                   : "text-[#CBD5C9] hover:text-[var(--color-gold)] hover:bg-[var(--color-primary-800)]/40"
               }`}
+              onClick={onClose}
             >
               <Icon className={`w-4 h-4 ${isActive ? 'stroke-[3px]' : 'stroke-2'}`} />
               {link.name}
