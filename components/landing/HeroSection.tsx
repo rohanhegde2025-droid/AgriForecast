@@ -131,7 +131,7 @@ const HeroSection: React.FC = () => {
 
                 {/* CTA row */}
                 <div className={`flex flex-col sm:flex-row items-start sm:items-center gap-5 section-hidden ${visible ? 'section-visible' : ''}`} style={{ transitionDelay: '0.4s' }}>
-                    <a href="/dashboard" className="btn-gold px-9 py-4 text-xs uppercase tracking-widest font-bold rounded-sm flex items-center gap-3 shadow-2xl">
+                    <a href="/login" className="btn-gold px-9 py-4 text-xs uppercase tracking-widest font-bold rounded-sm flex items-center gap-3 shadow-2xl">
                         <span>Get Started Now</span>
                         <svg width="15" height="15" viewBox="0 0 16 16" fill="none">
                             <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />

@@ -1,3 +1,14 @@
+import { db, auth } from "./firebase";
+import { 
+  collection, 
+  addDoc, 
+  getDocs, 
+  query, 
+  where, 
+  orderBy, 
+  Timestamp 
+} from "firebase/firestore";
+
 export interface PredictRequest {
   region: string;
   soil_type: string;
@@ -33,26 +44,50 @@ export async function predict(data: PredictRequest): Promise<PredictResponse> {
   return response.json();
 }
 
-// Persists a prediction result to localStorage for historical tracking
-export function saveToHistory(request: PredictRequest, response: PredictResponse) {
-  if (typeof window === "undefined") return;
+// Persists a prediction result to Firestore for historical tracking
+export async function saveToHistory(request: PredictRequest, response: PredictResponse) {
+  const user = auth.currentUser;
+  if (!user) return;
 
-  const history = JSON.parse(localStorage.getItem("prediction_history") || "[]");
-  const newEntry = {
-    id: Date.now(),
-    date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
-    time: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false }) + " IST",
-    ...request,
-    ...response,
-    variety: "(Sarson)", // Default for now
-    status: "verified"
-  };
+  try {
+    const newEntry = {
+      userId: user.uid,
+      createdAt: Timestamp.now(),
+      date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+      time: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false }) + " IST",
+      ...request,
+      ...response,
+      variety: "(Sarson)", // Default for now
+      status: "verified"
+    };
 
-  localStorage.setItem("prediction_history", JSON.stringify([newEntry, ...history].slice(0, 50)));
+    await addDoc(collection(db, "predictions"), newEntry);
+  } catch (error) {
+    console.error("Error saving to Firestore:", error);
+  }
 }
 
-// Retrieves all saved predictions from localStorage
-export function getHistory() {
-  if (typeof window === "undefined") return [];
-  return JSON.parse(localStorage.getItem("prediction_history") || "[]");
+// Retrieves user-specific predictions from Firestore
+export async function getHistory() {
+  const user = auth.currentUser;
+  if (!user) return [];
+
+  try {
+    // Note: orderBy("createdAt", "desc") requires a composite index in Firestore.
+    // Removing temporarily to fix existing runtime errors. 
+    const q = query(
+      collection(db, "predictions"),
+      where("userId", "==", user.uid)
+      // orderBy("createdAt", "desc") 
+    );
+
+    const querySnapshot = await getDocs(q);
+    const results = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    
+    // Sort manually on client to avoid index requirement for now
+    return results.sort((a: any, b: any) => b.createdAt?.toMillis() - a.createdAt?.toMillis());
+  } catch (error) {
+    console.error("Error fetching from Firestore:", error);
+    return [];
+  }
 }

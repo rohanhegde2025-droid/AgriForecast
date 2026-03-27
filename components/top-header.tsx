@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Bell, HelpCircle, Search } from "lucide-react";
-import { useSession } from "next-auth/react";
 
 export function TopHeader() {
   const pathname = usePathname();

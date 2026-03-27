@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
 
 const VALUES = [
   {
@@ -70,13 +71,21 @@ const ValueSection: React.FC = () => {
 
   return (
     <section id="value" ref={sectionRef}
-      className="relative py-24 overflow-hidden" style={{
-        background: '#E8F0E4' }}>
+      className="relative py-24 overflow-hidden bg-[#E8F0E4]"
+    >
+      {/* Background Image Layer */}
+      <div className="absolute inset-0 z-0">
+        <Image
+          src="/images/harvest_sunset.png"
+          alt="Golden harvest" fill className="object-cover opacity-10 mix-blend-multiply" unoptimized={false}
+        />
+      </div>
+
       {/* Subtle grid */}
       <div className="absolute inset-0 pointer-events-none"
         style={{
-          backgroundImage: 'linear-gradient(rgba(27,67,50,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(27,67,50,0.04) 1px, transparent 1px)',
-          backgroundSize: '50px 50px',
+          backgroundImage: 'linear-gradient(rgba(27,67,50,0.06) 1.5px, transparent 1.5px), linear-gradient(90deg, rgba(27,67,50,0.06) 1.5px, transparent 1.5px)',
+          backgroundSize: '80px 80px',
         }} />
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">

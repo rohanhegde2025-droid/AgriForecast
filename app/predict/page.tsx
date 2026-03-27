@@ -20,7 +20,7 @@ export default function PredictPage() {
     try {
       const response = await predict(data);
       setResult(response);
-      saveToHistory(data, response);
+      await saveToHistory(data, response);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Prediction failed. Please try again.");
     } finally {
@@ -38,10 +38,10 @@ export default function PredictPage() {
     <AppShell>
       <div className="max-w-5xl mx-auto px-10 py-10">
         <header className="mb-8">
-          <h1 className="text-2xl font-bold text-[var(--color-primary-900)] tracking-tight">
+          <h1 className="text-3xl font-bold text-[#E8F0E4] tracking-tight">
             {result ? "Prediction Results" : "New Prediction"}
           </h1>
-          <p className="text-sm text-[var(--color-text-muted)] mt-1">
+          <p className="text-sm text-[var(--color-gold)] mt-1 font-medium tracking-wide">
             {result
               ? "Review your crop yield and price forecast below."
               : "Enter your farm details to generate a yield and price prediction."

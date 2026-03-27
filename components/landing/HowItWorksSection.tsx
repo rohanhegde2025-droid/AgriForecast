@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
 
 const HowItWorksSection: React.FC = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -41,11 +42,18 @@ const HowItWorksSection: React.FC = () => {
     <section 
       id="how-it-works" 
       ref={sectionRef} 
-      className="relative py-32 overflow-hidden"
-      style={{ background: '#04291E' }}
+      className="relative py-32 overflow-hidden bg-[var(--color-primary-900)] border-y border-[var(--color-gold)]/20"
     >
+      {/* Background Image Layer */}
+      <div className="absolute inset-0 z-0">
+        <Image 
+          src="/images/agri_tech.png" 
+          alt="Technological field" fill className="object-cover opacity-10 mix-blend-overlay scale-110" unoptimized={false} 
+        />
+      </div>
+
       {/* Blueprint grid */}
-      <div className="absolute inset-0 blueprint-grid opacity-20 pointer-events-none" />
+      <div className="absolute inset-0 blueprint-grid opacity-30 pointer-events-none" />
       <div className="noise-overlay" />
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">

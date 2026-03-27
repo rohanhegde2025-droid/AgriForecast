@@ -18,7 +18,7 @@ const Header: React.FC = () => {
     { label: 'Features', href: '#features' },
     { label: 'Process', href: '#how-it-works' },
     { label: 'Outcomes', href: '#value' },
-    { label: 'Login', href: '/dashboard' },
+    { label: 'Login', href: '/login' },
   ];
 
   const headerBg = scrolled 
@@ -57,7 +57,7 @@ const Header: React.FC = () => {
 
           {/* Global CTA */}
           <a 
-            href="/dashboard" 
+            href="/login" 
             className="btn-gold hidden md:flex items-center gap-2 px-6 py-2.5 text-[0.65rem] rounded-sm uppercase tracking-widest font-bold shadow-2xl"
           >
             <span>Get Started</span>
@@ -85,7 +85,7 @@ const Header: React.FC = () => {
               </a>
             ))}
             <a 
-              href="#get-started" 
+              href="/login" 
               className="btn-gold px-7 py-4 text-[0.7rem] text-center rounded-sm mt-2 font-bold uppercase tracking-widest" 
               onClick={() => setMenuOpen(false)}
             >

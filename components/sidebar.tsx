@@ -9,20 +9,26 @@ export function Sidebar() {
 
   const mainLinks = [
     { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-    { name: "History", href: "/history", icon: History },
-    { name: "Prediction", href: "/predict", icon: Activity },
+    { name: "New Prediction", href: "/predict", icon: Activity },
+    { name: "Prediction History", href: "/history", icon: History },
   ];
 
   return (
-    <aside className="w-64 flex-shrink-0 border-r border-neutral-200/60 bg-[var(--color-background)] flex flex-col h-screen sticky top-0">
-      <div className="p-6 pb-8">
-        <Link href="/" className="block">
-          <h1 className="text-xl font-bold text-[var(--color-primary-900)] tracking-tight">AgriForecast</h1>
-          <p className="text-[10px] font-bold text-neutral-500 tracking-widest uppercase mt-1">The Digital Agronomist</p>
+    <aside className="w-68 flex-shrink-0 border-r border-[var(--color-gold)]/20 bg-[var(--color-primary-900)] flex flex-col h-screen sticky top-0 shadow-[4px_0_24px_rgba(0,0,0,0.3)] z-40">
+      <div className="p-8 pb-10">
+        <Link href="/" className="block group">
+          <h1 className="text-2xl font-black text-[#E8F0E4] tracking-tighter transition-all duration-300 group-hover:tracking-tight">
+            Agri<span className="text-[var(--color-gold)]">Forecast</span>
+          </h1>
+          <div className="flex items-center gap-2 mt-1.5 opacity-80">
+            <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-gold)] shadow-[0_0_8px_#D4A017]" />
+            <p className="text-[9px] font-bold text-[#CBD5C9] tracking-[0.2em] uppercase">Digital Agronomist</p>
+          </div>
         </Link>
       </div>
 
-      <nav className="flex-1 px-4 space-y-2">
+      <nav className="flex-1 px-5 space-y-3">
+        <p className="px-4 text-[9px] font-black text-[var(--color-gold)]/60 uppercase tracking-[0.3em] mb-4">Core Navigation</p>
         {mainLinks.map((link) => {
           const isActive = pathname === link.href;
           const Icon = link.icon;
@@ -31,36 +37,39 @@ export function Sidebar() {
             <Link
               key={link.name}
               href={link.href}
-              className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all ${
+              className={`flex items-center gap-4 px-5 py-3.5 rounded-sm text-[13px] font-bold transition-all duration-300 uppercase tracking-widest ${
                 isActive 
-                  ? "bg-white text-[var(--color-primary-900)] shadow-sm border-l-4 border-l-[var(--color-primary-900)] pl-3" 
-                  : "text-[var(--color-text-muted)] hover:text-[var(--color-text-main)] hover:bg-white/50"
+                  ? "bg-[var(--color-gold)] text-[var(--color-primary-900)] shadow-[0_0_15px_rgba(212,160,23,0.3)] scale-[1.02]" 
+                  : "text-[#CBD5C9] hover:text-[var(--color-gold)] hover:bg-[var(--color-primary-800)]/40"
               }`}
             >
-              <Icon className="w-4 h-4" />
+              <Icon className={`w-4 h-4 ${isActive ? 'stroke-[3px]' : 'stroke-2'}`} />
               {link.name}
             </Link>
           );
         })}
       </nav>
 
-      <div className="p-4 space-y-4">
-        <div className="bg-[#EAF0EC] rounded-lg p-3 border border-[#D5E1DA]">
-          <p className="text-[10px] font-bold text-[var(--color-primary-900)] uppercase tracking-wide mb-1">System Status</p>
-          <div className="flex items-center gap-2">
-            <div className="w-2 h-2 rounded-full bg-[var(--color-primary-900)]" />
-            <span className="text-xs font-medium text-[var(--color-text-main)]">Satellites Online</span>
+      <div className="p-6 space-y-5 bg-[var(--color-primary-800)]/20 border-t border-[var(--color-gold)]/10">
+        <div className="glass-dark rounded-lg p-4 border border-[var(--color-gold)]/30 shadow-inner">
+          <p className="text-[9px] font-black text-[var(--color-gold)] uppercase tracking-[0.25em] mb-2 pl-0.5 opacity-90">System Integrity</p>
+          <div className="flex items-center gap-2.5">
+            <div className="relative">
+              <div className="w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse shadow-[0_0_8px_rgba(34,197,94,0.6)]" />
+              <div className="absolute inset-0 w-2.5 h-2.5 rounded-full bg-green-400/40 animate-ping" />
+            </div>
+            <span className="text-[11px] font-bold text-[#E8F0E4] tracking-wide">Satellites Online</span>
           </div>
         </div>
 
-        <nav className="space-y-1">
-          <Link href="/settings" className="flex items-center gap-3 px-4 py-2 text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text-main)] transition-colors">
+        <nav className="space-y-2 px-2">
+          <Link href="/settings" className="flex items-center gap-3 py-2 text-[11px] font-bold text-[#CBD5C9] uppercase tracking-widest hover:text-[var(--color-gold)] transition-all duration-300">
             <Settings className="w-4 h-4" />
-            Settings
+            Control Panel
           </Link>
-          <a href="#" className="flex items-center gap-3 px-4 py-2 text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text-main)] transition-colors">
+          <a href="mailto:samarthhk1234@gmail.com" className="flex items-center gap-3 py-2 text-[11px] font-bold text-[#CBD5C9] uppercase tracking-widest hover:text-[var(--color-gold)] transition-all duration-300">
             <HelpCircle className="w-4 h-4" />
-            Support
+            Support Relay
           </a>
         </nav>
       </div>

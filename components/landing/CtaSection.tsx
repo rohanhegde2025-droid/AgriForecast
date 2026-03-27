@@ -66,7 +66,7 @@ import React, { useEffect, useRef, useState } from 'react';
 
                             {/* CTA button */}
                             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                                <a href="/dashboard"
+                                <a href="/login"
                                     className="btn-gold px-10 py-4 text-sm rounded-sm flex items-center gap-3 shadow-2xl">
                                     <span>Try AgriForecast Now</span>
                                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none">

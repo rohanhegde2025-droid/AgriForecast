@@ -37,6 +37,32 @@ CROP_ENCODING = {
     "Rice": 3, "Soybean": 4, "Wheat": 5,
 }
 
+# ── MSP reference prices (Minimum Support Price ₹/Quintal) ──
+# These anchor the lag features so the price model sees realistic inputs
+MSP_PRICES = {
+    "Barley": 1735, "Cotton": 6620, "Maize": 2090,
+    "Rice": 2203, "Soybean": 4600, "Wheat": 2275,
+}
+
+# ── Expected columns for the yield pipeline ──
+YIELD_COLUMNS = [
+    "Region", "Soil_Type", "Crop", "Rainfall_mm", "Temperature_Celsius",
+    "Fertilizer_Used", "Irrigation_Used", "Weather_Condition", "Days_to_Harvest",
+]
+
+# ── Frontend -> Model column name mapping ──
+COLUMN_MAPPING = {
+    "region": "Region",
+    "soil_type": "Soil_Type",
+    "crop": "Crop",
+    "rainfall_mm": "Rainfall_mm",
+    "temperature_celsius": "Temperature_Celsius",
+    "fertilizer_used": "Fertilizer_Used",
+    "irrigation_used": "Irrigation_Used",
+    "weather_condition": "Weather_Condition",
+    "days_to_harvest": "Days_to_Harvest",
+}
+
 
 # ────────────────────────────────────────────────────────
 # Model Loading
@@ -105,29 +131,31 @@ def predict_yield(features: dict) -> float:
         return YIELD_FALLBACK
 
     try:
-        # Handle features dict - map to expected model columns if necessary
-        # Assuming features dict contains: region, soil_type, crop, rainfall_mm, temp, etc.
-        df = pd.DataFrame([features])
+        # Rename frontend keys to model keys
+        renamed = {COLUMN_MAPPING.get(k, k): v for k, v in features.items()}
         
-        # Mapping frontend names to model names if they differ
-        # (Standardizing to match what's in 'Yield_Prediction/mainfile.ipynb' if possible)
-        mapping = {
-            "region": "Region",
-            "soil_type": "Soil_Type",
-            "crop": "Crop",
-            "rainfall_mm": "Rainfall_mm",
-            "temperature_celsius": "Temperature_Celsius",
-            "fertilizer_used": "Fertilizer_Used",
-            "irrigation_used": "Irrigation_Used",
-            "weather_condition": "Weather_Condition",
-            "days_to_harvest": "Days_to_Harvest"
-        }
+        # Build DataFrame with ONLY the columns the model expects, in the right order
+        row = {}
+        for col in YIELD_COLUMNS:
+            if col in renamed:
+                row[col] = renamed[col]
+            else:
+                logger.warning("Missing yield feature: %s", col)
+                row[col] = None
         
-        # Rename if keys exist
-        df = df.rename(columns={k: v for k, v in mapping.items() if k in df.columns})
+        df = pd.DataFrame([row])
+        
+        # Ensure correct types
+        df["Rainfall_mm"] = pd.to_numeric(df["Rainfall_mm"], errors="coerce")
+        df["Temperature_Celsius"] = pd.to_numeric(df["Temperature_Celsius"], errors="coerce")
+        df["Days_to_Harvest"] = pd.to_numeric(df["Days_to_Harvest"], errors="coerce").astype(int)
+        df["Fertilizer_Used"] = df["Fertilizer_Used"].astype(bool)
+        df["Irrigation_Used"] = df["Irrigation_Used"].astype(bool)
         
         prediction = model_store.yield_model.predict(df)
-        return float(prediction[0])
+        result = float(prediction[0])
+        logger.info("Yield prediction: %s for crop=%s, region=%s", result, row.get("Crop"), row.get("Region"))
+        return result
     except Exception as exc:
         logger.warning("Yield prediction failed, using fallback: %s", exc)
         return YIELD_FALLBACK
@@ -150,27 +178,30 @@ def predict_price(features: dict) -> dict:
 
     try:
         crop = features.get("crop", "Wheat")
-        crop_encoded = CROP_ENCODING.get(crop.strip().title(), 5) # Default to Wheat
+        crop_clean = crop.strip().title()
+        crop_encoded = CROP_ENCODING.get(crop_clean, 5)  # Default to Wheat
 
+        # Get the MSP base price for this specific crop
+        base_price = MSP_PRICES.get(crop_clean, 2275)  # Default to Wheat MSP
+        
         import datetime
         now = datetime.datetime.now()
 
-        # Build feature row for XGBoost
-        # Note: In a real scenario, we'd need historical data for lags. 
-        # Using fallbacks/defaults for now as per minimal inference requirements.
+        # Build feature row using crop-specific MSP base prices
+        # This ensures different crops get different price predictions
         feature_row = pd.DataFrame([{
             "crop_encoded": crop_encoded,
-            "lag_7": PRICE_FALLBACK,
-            "lag_14": PRICE_FALLBACK,
-            "lag_30": PRICE_FALLBACK,
-            "lag_60": PRICE_FALLBACK,
-            "rolling_7": PRICE_FALLBACK,
-            "rolling_14": PRICE_FALLBACK,
-            "rolling_30": PRICE_FALLBACK,
-            "rolling_90": PRICE_FALLBACK,
-            "momentum_7": 0,
-            "momentum_30": 0,
-            "msp_gap": 0,
+            "lag_7": base_price * 1.02,       # Recent price slightly above MSP
+            "lag_14": base_price * 1.01,
+            "lag_30": base_price * 0.99,
+            "lag_60": base_price * 0.97,
+            "rolling_7": base_price * 1.01,
+            "rolling_14": base_price * 1.005,
+            "rolling_30": base_price * 0.995,
+            "rolling_90": base_price * 0.98,
+            "momentum_7": base_price * 0.02,  # Positive momentum
+            "momentum_30": base_price * 0.03,
+            "msp_gap": base_price * 0.05,     # 5% above MSP
             "month": now.month,
             "week": now.isocalendar()[1],
             "quarter": (now.month - 1) // 3 + 1,
@@ -182,10 +213,9 @@ def predict_price(features: dict) -> dict:
         xgb_pred = float(model_store.price_xgb.predict(feature_row[PRICE_FEATURES])[0])
 
         # Prophet prediction
-        prophet_pred = xgb_pred # Default fallback if prophet missing
+        prophet_pred = xgb_pred  # Default fallback if prophet missing
         if model_store.price_prophet is not None:
             try:
-                # Minimal prophet future frame
                 future = model_store.price_prophet.make_future_dataframe(periods=1)
                 forecast = model_store.price_prophet.predict(future)
                 prophet_pred = float(forecast["yhat"].iloc[-1])
@@ -194,9 +224,14 @@ def predict_price(features: dict) -> dict:
 
         # Ensemble: 60% XGBoost + 40% Prophet
         final_price = 0.6 * xgb_pred + 0.4 * prophet_pred
-        confidence = abs(xgb_pred - prophet_pred)
 
-        trend = "up" if final_price > PRICE_FALLBACK else "down" if final_price < PRICE_FALLBACK * 0.95 else "stable"
+        # Confidence based on gap between models
+        confidence = max(0, 100 - abs(xgb_pred - prophet_pred) / base_price * 100)
+
+        # Trend based on comparison to MSP
+        trend = "up" if final_price > base_price else "down" if final_price < base_price * 0.95 else "stable"
+        
+        logger.info("Price prediction: %.2f for crop=%s (MSP=%d)", final_price, crop_clean, base_price)
 
         return {
             "price_prediction": round(final_price, 2),
